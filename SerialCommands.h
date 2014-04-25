@@ -4,25 +4,16 @@
 // how much serial data we expect before a newline
 #define MAX_INPUT 50
 
-// Serial Comands functions
-void command_motors(int i, int value){
-  if(value > MOTOR_LOW && value < MOTOR_HIGH){
-    motors[i].write(value);
-    Serial.print("Set motor ");
-    Serial.print(i);
-    Serial.print(" to ");
-    Serial.println(value);
-  }else{
-    Serial.println("Value out of range for motors");
-  }
-}
-
 // Really basic parser for commands
 void select_command(String command, String value){
   if(command == "motors0"){
-    command_motors(0, value.toInt());
+    setMotor(0, value.toInt());
   }else if(command == "motors1"){
-    command_motors(1, value.toInt());
+    setMotor(1, value.toInt());
+  }else if(command == "motors2"){
+    setMotor(2, value.toInt());
+  }else if(command == "motors3"){
+    setMotor(3, value.toInt());
   }else{
     Serial.println("Command not found");
   }
@@ -40,7 +31,7 @@ void process_data (const char * data){
     select_command(command, value);
   }
 }  // end of process_data
-  
+
 void processIncomingByte (const byte inByte){
   static char input_line[MAX_INPUT];
   static unsigned int input_pos = 0;
@@ -49,12 +40,12 @@ void processIncomingByte (const byte inByte){
 
     case ';':   // end of textx
       input_line [input_pos] = 0;  // terminating null byte
-      
+
       // terminator reached! process input_line here ...
       process_data (input_line);
-      
+
       // reset buffer for next time
-      input_pos = 0;  
+      input_pos = 0;
       break;
 
     case '\n':   // discard newline
@@ -69,14 +60,14 @@ void processIncomingByte (const byte inByte){
       break;
 
     }  // end of switch
-   
-  } // end of processIncomingByte  
+
+  } // end of processIncomingByte
 
 void readSerialCommands(){
   // if serial data available, process it
   if (Serial.available () > 0)
     processIncomingByte (Serial.read());
-    
+
   // do other stuff here like testing digital input (button presses) ...
 }  // end of loop
 
