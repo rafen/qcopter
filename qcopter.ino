@@ -5,6 +5,7 @@
 
 #include "Motors.h"
 #include "Flight.h"
+#include "Stability.h"
 #include "SerialCommands.h"
 
 
@@ -16,4 +17,5 @@ void setup() {
 void loop(){
     readSerialCommands();
     flight();
+    stability();
 }

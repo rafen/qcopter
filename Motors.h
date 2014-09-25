@@ -9,7 +9,7 @@
 #define MOTOR_INIT_DELAY 1000
 
 #define MOTOR_LOCK
-#define MOTOR_DEBUG_LEVEL 1
+#define MOTOR_DEBUG_LEVEL 0
 
 // Create Servo objects for the four motors
 Servo motors[CNT_MOTORS];

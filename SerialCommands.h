@@ -4,15 +4,30 @@
 // how much serial data we expect before a newline
 #define MAX_INPUT 50
 
+#define COMMANDS_DEBUG_LEVEL 1
+
+
 // Really basic parser for commands
 void select_command(String command, String value){
-    if(command == "stop"){
-        Serial.println("stop!");    
+  #if COMMANDS_DEBUG_LEVEL >= 1
+      Serial.print(command);
+      Serial.print(":");
+      Serial.println(value);
+  #endif
+
+  if(command == "stop"){
     }else if(command == "acc"){
-        Serial.print("acc:");
-        Serial.println(value.toInt());    
+        acc = value.toInt();
+    }else if(command == "p"){
+        Kp = value.toInt();
+    }else if(command == "i"){
+        Ki = value.toInt();
+    }else if(command == "d"){
+        Kd = value.toInt();
     }else{
-        Serial.println("Command not found");
+        #if COMMANDS_DEBUG_LEVEL >= 1
+            Serial.println("Command not found");
+        #endif
     }
 }
 
