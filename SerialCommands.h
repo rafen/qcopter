@@ -6,7 +6,6 @@
 
 #define COMMANDS_DEBUG_LEVEL 1
 
-
 // Really basic parser for commands
 void select_command(String command, String value){
   #if COMMANDS_DEBUG_LEVEL >= 1
@@ -17,13 +16,18 @@ void select_command(String command, String value){
 
   if(command == "stop"){
     }else if(command == "acc"){
-        acc = value.toInt();
-    }else if(command == "p"){
-        Kp = value.toInt();
-    }else if(command == "i"){
-        Ki = value.toInt();
-    }else if(command == "d"){
-        Kd = value.toInt();
+        serialSpeed = value.toInt();
+    }else if(command == "pp"){  // Pitch PID
+        pKp = toDouble(value);
+        setPID();
+    }else if(command == "pi"){
+        pKi = toDouble(value);
+        setPID();
+    }else if(command == "pd"){
+        pKd = toDouble(value);
+        setPID();
+    }else if(command == "pitch"){
+        pitch = value.toInt();
     }else{
         #if COMMANDS_DEBUG_LEVEL >= 1
             Serial.println("Command not found");

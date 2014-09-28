@@ -1,12 +1,27 @@
 #ifndef _Stability_h
 #define _Stability_h
 
-int Kp = 10;
-int Ki = 2;
-int Kd = 5;
+// Pitch
+double pitch = 1;
+double pKp = 7, pKi = 0, pKd = 1.1,
+      pOut = 0, pSet = 0;
+PID* pController = new PID(&pitch, &pOut, &pSet, pKp, pKi, pKd, REVERSE);
 
+
+// Stability initialization or Setup
+void stabilitySetup(){
+	pController->SetOutputLimits(-1000, 1000);
+	pController->SetMode(AUTOMATIC);
+}
+
+// Stability Loop
 void stability(){
-//    Serial.println("They see me stable");
+    pController->Compute();
+}
+
+// Set PID values
+void setPID(){
+    pController->SetTunings(pKp, pKi, pKd);
 }
 
 #endif

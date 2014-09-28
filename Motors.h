@@ -5,14 +5,17 @@
 
 #define MOTOR_LOW 0
 #define MOTOR_HIGH 120
+#define MOTOR_LOW_MICROSECONDS 0
+#define MOTOR_HIGH_MICROSECONDS 2000
 #define MOTOR_INIT_SPEED 30
 #define MOTOR_INIT_DELAY 1000
 
 #define MOTOR_LOCK
-#define MOTOR_DEBUG_LEVEL 0
+#define MOTOR_DEBUG_LEVEL 1
 
 // Create Servo objects for the four motors
 Servo motors[CNT_MOTORS];
+
 
 void motorsSetup(){
     /**
@@ -63,11 +66,34 @@ void setMotor(int motor, int value){
     motors[motor].write(value);
 
     #if MOTOR_DEBUG_LEVEL >= 1
-        Serial.print("Set motor ");
+        Serial.print("Write motor ");
         Serial.print(motor);
         Serial.print(" to ");
         Serial.println(value);
     #endif
+}
+
+void setMotorMicroseconds(int motor, int value){
+    /**
+    Set speed in microseconds of the given motor. The speed will be limited to the range of
+    MOTOR_LOW_MICROSECONDS, MOTOR_HIGH_MICROSECONDS
+
+    @param motor Index of the motor to set the speed
+    @param value Speed to be set to motor
+    @return Void
+    */
+    value = constrain(value, MOTOR_LOW_MICROSECONDS, MOTOR_HIGH_MICROSECONDS);
+    
+    if(value != motors[0].readMicroseconds()){
+        motors[motor].writeMicroseconds(value);
+    
+        #if MOTOR_DEBUG_LEVEL >= 1
+            Serial.print("Set microseconds motor ");
+            Serial.print(motor);
+            Serial.print(" to ");
+            Serial.println(value);
+        #endif
+    }  
 }
 
 #endif
