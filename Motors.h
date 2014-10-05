@@ -16,6 +16,8 @@
 // Create Servo objects for the four motors
 Servo motors[CNT_MOTORS];
 
+// Force Motors to stop
+bool motorsBlocked = false;
 
 void motorsSetup(){
     /**
@@ -53,7 +55,7 @@ void motorsSetup(){
     Serial.println("Motors Armed!");
 }
 
-void setMotor(int motor, int value){
+void motorsSet(int motor, int value){
     /**
     Set speed of the given motor. The speed will be limited to the range of
     MOTOR_LOW, MOTOR_HIGH
@@ -62,18 +64,21 @@ void setMotor(int motor, int value){
     @param value Speed to be set to motor
     @return Void
     */
-    value = constrain(value, MOTOR_LOW, MOTOR_HIGH),
-    motors[motor].write(value);
+    value = constrain(value, MOTOR_LOW, MOTOR_HIGH);
 
-    #if MOTOR_DEBUG_LEVEL >= 1
-        Serial.print("Write motor ");
-        Serial.print(motor);
-        Serial.print(" to ");
-        Serial.println(value);
-    #endif
+    if(!motorsBlocked && value != motors[motor].read()){
+        motors[motor].write(value);
+
+        #if MOTOR_DEBUG_LEVEL >= 1
+            Serial.print("Write motor ");
+            Serial.print(motor);
+            Serial.print(" to ");
+            Serial.println(value);
+        #endif
+    }
 }
 
-void setMotorMicroseconds(int motor, int value){
+void motorsSetMicroseconds(int motor, int value){
     /**
     Set speed in microseconds of the given motor. The speed will be limited to the range of
     MOTOR_LOW_MICROSECONDS, MOTOR_HIGH_MICROSECONDS
@@ -84,7 +89,7 @@ void setMotorMicroseconds(int motor, int value){
     */
     value = constrain(value, MOTOR_LOW_MICROSECONDS, MOTOR_HIGH_MICROSECONDS);
     
-    if(value != motors[0].readMicroseconds()){
+    if(!motorsBlocked && value != motors[motor].readMicroseconds()){
         motors[motor].writeMicroseconds(value);
     
         #if MOTOR_DEBUG_LEVEL >= 1
@@ -94,6 +99,13 @@ void setMotorMicroseconds(int motor, int value){
             Serial.println(value);
         #endif
     }  
+}
+
+void motorsBlock(){
+    motorsBlocked = true;
+}
+void motorsUnblock(){
+    motorsBlocked = false;
 }
 
 #endif

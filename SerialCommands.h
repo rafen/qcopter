@@ -8,13 +8,17 @@
 
 // Really basic parser for commands
 void select_command(String command, String value){
-  #if COMMANDS_DEBUG_LEVEL >= 1
-      Serial.print(command);
-      Serial.print(":");
-      Serial.println(value);
-  #endif
 
-  if(command == "stop"){
+    #if COMMANDS_DEBUG_LEVEL >= 1
+        Serial.print(command);
+        Serial.print(":");
+        Serial.println(value);
+    #endif
+
+    if(command == "stop"){
+        motorsBlock();
+    }else if(command == "start"){
+        motorsUnblock();
     }else if(command == "acc"){
         serialSpeed = value.toInt();
     }else if(command == "pp"){  // Pitch PID

@@ -13,7 +13,7 @@ void flight(){
     speed = INIT_SPEED + serialSpeed;
 
     // Update motor speed if needed
-    setMotorMicroseconds(0, speed + pOut);
+    motorsSetMicroseconds(0, speed + pOut);
 }
 
 #endif

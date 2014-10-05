@@ -2,7 +2,7 @@
 #define _Stability_h
 
 // Pitch
-double pitch = 1;
+double pitch = 0;
 double pKp = 7, pKi = 0, pKd = 1.1,
       pOut = 0, pSet = 0;
 PID* pController = new PID(&pitch, &pOut, &pSet, pKp, pKi, pKd, REVERSE);
